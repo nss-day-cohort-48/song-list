@@ -1,14 +1,23 @@
-import { getSongs } from "./database.js"
+import { getSongs, setChosenSong, addSongToPlayList } from "./database.js"
 
 
 const container = document.querySelector("#container")
 
 container.addEventListener(
+    "change",
+    (changeEvent) => {
+        if (changeEvent.target.name === "song") {
+            const songId = parseInt(changeEvent.target.value)
+            setChosenSong(songId)
+        }
+    }
+)
+
+container.addEventListener(
     "click",
     (clickEvent) => {
-        if (clickEvent.target.name === "song") {
-            const songId = parseInt(clickEvent.target.value)
-            addSongToPlayList(songId)
+        if (clickEvent.target.id === "submitButton") {
+            addSongToPlayList()
         }
     }
 )
@@ -27,7 +36,7 @@ export const SongList = () => {
 
     let html = songRadioButtons.join("")
 
-    html += "<button>Add to Playlist</button>"
+    html += "<button id='submitButton'>Add to Playlist</button>"
 
     return html
 }
